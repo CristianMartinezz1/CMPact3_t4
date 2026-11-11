@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments :: head(${alumnoId == null} ? 'Nuevo alumno' : 'Editar alumno')}"></head>
+<body>
+<div th:replace="~{fragments :: encabezado}"></div>
+<main>
+    <div class="card">
+        <h2 th:text="${alumnoId == null} ? 'Nuevo alumno' : 'Editar alumno'">Nuevo alumno</h2>
+        <div class="error" th:if="${error}" th:text="${error}">Error</div>
+
+        <!-- Crear: POST /alumnos   ·   Editar: POST /alumnos/{id} -->
+        <form th:action="${alumnoId == null} ? @{/alumnos} : @{/alumnos/{id}(id=${alumnoId})}"
+              th:object="${alumno}" method="post">
+            <label for="matricula">Matrícula</label>
+            <input type="text" id="matricula" th:field="*{matricula}" maxlength="20" required>
+
+            <label for="nombre">Nombre completo</label>
+            <input type="text" id="nombre" th:field="*{nombre}" maxlength="100" required>
+
+            <label for="email">Correo</label>
+            <input type="email" id="email" th:field="*{email}" maxlength="100">
+
+            <label for="semestre">Semestre</label>
+            <input type="number" id="semestre" th:field="*{semestre}" min="1" max="12">
+
+            <!-- Relación: se elige la Carrera por su nombre; se envía su id (carreraId) -->
+            <label for="carreraId">Carrera</label>
+            <select id="carreraId" th:field="*{carreraId}" required>
+                <option value="">Selecciona una carrera</option>
+                <option th:each="c : ${carreras}" th:value="${c.id}"
+                        th:text="${c.clave + ' - ' + c.nombre}">ISC - Carrera</option>
+            </select>
+
+            <div class="botones">
+                <button type="submit" class="btn" th:text="${alumnoId == null} ? 'Guardar alumno' : 'Guardar cambios'">Guardar</button>
+                <a class="btn btn-sec" th:href="@{/alumnos}">Cancelar</a>
+            </div>
+        </form>
+    </div>
+</main>
+</body>
+</html>

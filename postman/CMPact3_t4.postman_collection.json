@@ -1,0 +1,85 @@
+{
+  "info": {
+    "name": "CMPact3_t4 - CRUD Alumnos y Carreras",
+    "description": "CRUD de Alumnos (relacion @ManyToOne con Carrera). Cambia la variable baseUrl para probar en local o en el VPS.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "http://68.155.155.10:8083" },
+    { "key": "alumnoId", "value": "1" }
+  ],
+  "item": [
+    {
+      "name": "1. Listar carreras",
+      "request": { "method": "GET", "url": "{{baseUrl}}/api/carreras" },
+      "event": [{ "listen": "test", "script": { "exec": [
+        "pm.test('200 OK', () => pm.response.to.have.status(200));",
+        "pm.test('Hay carreras', () => pm.expect(pm.response.json().length).to.be.above(0));"
+      ] } }]
+    },
+    {
+      "name": "2. CREATE - Crear alumno",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "url": "{{baseUrl}}/api/alumnos",
+        "body": { "mode": "raw", "raw": "{\n  \"matricula\": \"23169999\",\n  \"nombre\": \"Alumno de Prueba Postman\",\n  \"email\": \"prueba@ejemplo.com\",\n  \"semestre\": 4,\n  \"carreraId\": 1\n}" }
+      },
+      "event": [{ "listen": "test", "script": { "exec": [
+        "pm.test('201 Created', () => pm.response.to.have.status(201));",
+        "const a = pm.response.json();",
+        "pm.test('Trae el nombre de su carrera', () => pm.expect(a.carrera.nombre).to.be.a('string'));",
+        "pm.collectionVariables.set('alumnoId', a.id);"
+      ] } }]
+    },
+    {
+      "name": "3. READ - Listar alumnos",
+      "request": { "method": "GET", "url": "{{baseUrl}}/api/alumnos" },
+      "event": [{ "listen": "test", "script": { "exec": [
+        "pm.test('200 OK', () => pm.response.to.have.status(200));"
+      ] } }]
+    },
+    {
+      "name": "4. READ - Buscar alumno por id",
+      "request": { "method": "GET", "url": "{{baseUrl}}/api/alumnos/{{alumnoId}}" },
+      "event": [{ "listen": "test", "script": { "exec": [
+        "pm.test('200 OK', () => pm.response.to.have.status(200));",
+        "pm.test('Muestra la carrera', () => pm.expect(pm.response.json().carrera.clave).to.be.a('string'));"
+      ] } }]
+    },
+    {
+      "name": "5. UPDATE - Actualizar alumno",
+      "request": {
+        "method": "PUT",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "url": "{{baseUrl}}/api/alumnos/{{alumnoId}}",
+        "body": { "mode": "raw", "raw": "{\n  \"matricula\": \"23169999\",\n  \"nombre\": \"Alumno de Prueba Actualizado\",\n  \"email\": \"prueba@ejemplo.com\",\n  \"semestre\": 5,\n  \"carreraId\": 2\n}" }
+      },
+      "event": [{ "listen": "test", "script": { "exec": [
+        "pm.test('200 OK', () => pm.response.to.have.status(200));",
+        "pm.test('Cambio de carrera', () => pm.expect(pm.response.json().carrera.id).to.eql(2));"
+      ] } }]
+    },
+    {
+      "name": "6. READ - Alumnos de una carrera",
+      "request": { "method": "GET", "url": "{{baseUrl}}/api/carreras/2/alumnos" },
+      "event": [{ "listen": "test", "script": { "exec": [
+        "pm.test('200 OK', () => pm.response.to.have.status(200));"
+      ] } }]
+    },
+    {
+      "name": "7. DELETE - Eliminar alumno",
+      "request": { "method": "DELETE", "url": "{{baseUrl}}/api/alumnos/{{alumnoId}}" },
+      "event": [{ "listen": "test", "script": { "exec": [
+        "pm.test('204 No Content', () => pm.response.to.have.status(204));"
+      ] } }]
+    },
+    {
+      "name": "8. READ - Verificar que se elimino (404)",
+      "request": { "method": "GET", "url": "{{baseUrl}}/api/alumnos/{{alumnoId}}" },
+      "event": [{ "listen": "test", "script": { "exec": [
+        "pm.test('404 Not Found', () => pm.response.to.have.status(404));"
+      ] } }]
+    }
+  ]
+}

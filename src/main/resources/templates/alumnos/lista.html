@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments :: head('Alumnos')}"></head>
+<body>
+<div th:replace="~{fragments :: encabezado}"></div>
+<main>
+    <div class="ok" th:if="${mensaje}" th:text="${mensaje}">Mensaje</div>
+
+    <div class="card">
+        <div class="encabezado-card">
+            <h2>Alumnos registrados</h2>
+            <a class="btn" th:href="@{/alumnos/nuevo}">+ Nuevo alumno</a>
+        </div>
+
+        <p>Filtrar por carrera:</p>
+        <a class="chip" th:classappend="${carreraId == null} ? 'activo'" th:href="@{/alumnos}">Todas</a>
+        <a class="chip" th:each="c : ${carreras}"
+           th:classappend="${c.id == carreraId} ? 'activo'"
+           th:href="@{/alumnos(carreraId=${c.id})}" th:text="${c.clave}">ISC</a>
+
+        <table>
+            <thead>
+            <tr><th>ID</th><th>Matrícula</th><th>Nombre</th><th>Correo</th><th>Sem.</th><th>Carrera</th><th>Acciones</th></tr>
+            </thead>
+            <tbody>
+            <tr th:each="a : ${alumnos}">
+                <td th:text="${a.id}">1</td>
+                <td th:text="${a.matricula}">23161016</td>
+                <td th:text="${a.nombre}">Nombre</td>
+                <td th:text="${a.email} ?: '—'">correo</td>
+                <td th:text="${a.semestre} ?: '—'">7</td>
+                <!-- La relación: se muestra el nombre de la carrera, no solo su id -->
+                <td><span class="etiqueta" th:text="${a.carrera.clave}">ISC</span><span th:text="${a.carrera.nombre}">Carrera</span></td>
+                <td>
+                    <div class="acciones">
+                        <a class="btn btn-sec btn-chico" th:href="@{/alumnos/{id}/editar(id=${a.id})}">Editar</a>
+                        <form th:action="@{/alumnos/{id}/eliminar(id=${a.id})}" method="post"
+                              onsubmit="return confirm('¿Eliminar a este alumno?');">
+                            <button type="submit" class="btn btn-borrar btn-chico">Eliminar</button>
+                        </form>
+                    </div>
+                </td>
+            </tr>
+            <tr th:if="${#lists.isEmpty(alumnos)}">
+                <td colspan="7" class="vacio">No hay alumnos registrados en esta carrera.</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</main>
+</body>
+</html>

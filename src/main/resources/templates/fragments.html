@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:fragment="head(titulo)">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title th:text="${titulo}">Título</title>
+    <style>
+        :root {
+            --jade: #2fb583;
+            --jade-oscuro: #1f8a62;
+            --jade-claro: #e6f6ef;
+            --jade-borde: #c5e9da;
+            --texto: #111111;
+            --fondo: #ffffff;
+            --rojo: #d64545;
+        }
+        body { font-family: system-ui, sans-serif; margin: 0; background: var(--fondo); color: var(--texto); }
+        header { background: var(--jade); color: var(--texto); padding: 18px 24px; }
+        header h1 { margin: 0; font-size: 1.35rem; }
+        nav { background: var(--fondo); padding: 12px 24px; border-bottom: 2px solid var(--jade); }
+        nav a { margin-right: 20px; color: var(--texto); text-decoration: none; font-weight: 600;
+                padding-bottom: 2px; border-bottom: 2px solid transparent; }
+        nav a:hover { border-bottom-color: var(--jade-oscuro); }
+        main { max-width: 1000px; margin: 28px auto; padding: 0 16px; }
+        .card { background: var(--fondo); border: 1px solid var(--jade-borde); border-radius: 10px; padding: 22px;
+                box-shadow: 0 2px 8px rgba(31, 138, 98, .08); margin-bottom: 20px; }
+        .encabezado-card { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; }
+        h2 { margin: 0 0 12px; }
+        a { color: var(--texto); text-decoration-color: var(--jade-oscuro); text-underline-offset: 3px; }
+        table { width: 100%; border-collapse: collapse; }
+        th, td { text-align: left; padding: 10px; border-bottom: 1px solid var(--jade-borde); vertical-align: middle; }
+        th { background: var(--jade-claro); }
+        tbody tr:hover { background: #f5fbf8; }
+        .chip { display: inline-block; padding: 4px 14px; margin: 0 6px 6px 0; border-radius: 999px;
+                border: 1px solid var(--jade-oscuro); color: var(--texto); text-decoration: none; font-size: .9rem; }
+        .chip:hover { background: var(--jade-claro); }
+        .chip.activo { background: var(--jade); border-color: var(--jade); font-weight: 600; }
+        .etiqueta { display: inline-block; padding: 2px 8px; border-radius: 6px; background: var(--jade-claro);
+                    border: 1px solid var(--jade-borde); font-size: .8rem; font-weight: 600; margin-right: 6px; }
+        label { display: block; margin: 12px 0 4px; font-weight: 600; }
+        input, select { width: 100%; padding: 8px; border: 1px solid #b8c4be; border-radius: 6px; box-sizing: border-box;
+                        font: inherit; background: #fff; }
+        input:focus, select:focus { outline: 2px solid var(--jade); border-color: var(--jade); }
+        .btn { display: inline-block; padding: 9px 16px; background: var(--jade); color: var(--texto); font-weight: 600;
+               border: 0; border-radius: 6px; cursor: pointer; text-decoration: none; font: inherit; font-weight: 600; }
+        .btn:hover { background: var(--jade-oscuro); }
+        .btn-sec { background: #fff; border: 1px solid var(--jade-oscuro); }
+        .btn-sec:hover { background: var(--jade-claro); }
+        .btn-borrar { background: #fff; border: 1px solid var(--rojo); color: var(--texto); }
+        .btn-borrar:hover { background: #fdecec; }
+        .btn-chico { padding: 5px 10px; font-size: .85rem; }
+        .acciones { display: flex; gap: 6px; }
+        .acciones form { margin: 0; }
+        .ok { font-weight: 600; padding: 10px 14px; background: var(--jade-claro); border-left: 4px solid var(--jade); margin-bottom: 16px; }
+        .error { font-weight: 600; padding: 10px 14px; background: #fdecec; border-left: 4px solid var(--rojo); margin-bottom: 16px; }
+        .vacio { color: #555; font-style: italic; }
+        .botones { margin-top: 18px; display: flex; gap: 8px; }
+    </style>
+</head>
+<body>
+
+<div th:fragment="encabezado">
+    <header>
+        <h1 th:text="${nombreProyecto}">Nombre del proyecto</h1>
+    </header>
+    <nav>
+        <a th:href="@{/alumnos}">Alumnos</a>
+        <a th:href="@{/alumnos/nuevo}">Nuevo alumno</a>
+        <a th:href="@{/carreras}">Carreras</a>
+    </nav>
+</div>
+
+</body>
+</html>

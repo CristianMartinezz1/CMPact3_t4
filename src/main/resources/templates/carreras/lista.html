@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments :: head('Carreras')}"></head>
+<body>
+<div th:replace="~{fragments :: encabezado}"></div>
+<main>
+    <div class="card">
+        <h2>Carreras y sus alumnos</h2>
+        <p>Relación vista desde la Carrera (<code>@OneToMany</code>): cada carrera lista a sus alumnos.</p>
+        <table>
+            <thead>
+            <tr><th>ID</th><th>Clave</th><th>Carrera</th><th>Alumnos</th><th>Total</th></tr>
+            </thead>
+            <tbody>
+            <tr th:each="c : ${carreras}">
+                <td th:text="${c.id}">1</td>
+                <td><span class="etiqueta" th:text="${c.clave}">ISC</span></td>
+                <td><a th:href="@{/alumnos(carreraId=${c.id})}" th:text="${c.nombre}">Carrera</a></td>
+                <td>
+                    <span th:each="a, i : ${c.alumnos}" th:text="${a.nombre} + (${i.last} ? '' : ', ')">Alumno</span>
+                    <span class="vacio" th:if="${#lists.isEmpty(c.alumnos)}">Sin alumnos</span>
+                </td>
+                <td th:text="${#lists.size(c.alumnos)}">0</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</main>
+</body>
+</html>
